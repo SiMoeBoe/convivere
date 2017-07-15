@@ -16,11 +16,11 @@ class LocaleController extends Controller {
    * @todo Use not-encryptet cookies
    */
   public function setLocale( $locale = 'en' ) {
-    //if ( !in_array( $locale, [ 'en', 'de' ] ) ) {
-      //$locale = 'en';
-    //}
-    //$cookie = Cookie::forever( 'locale', $locale );
-    return redirect( url( URL::previous() ) );//->withCookie( $cookie );
+    if ( !in_array( $locale, [ 'en', 'de' ] ) ) {
+      $locale = 'en';
+    }
+    $cookie = Cookie::forever( 'locale', $locale );
+    return redirect( url( URL::previous() ) )->withCookie( $cookie );
   }
 
 }
