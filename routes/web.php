@@ -17,6 +17,8 @@ Route::get( '/', function () {
 
 Auth::routes();
 
+Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name( 'logs' );
+
 Route::get('locale/{locale?}', 'LocaleController@setLocale')->name( 'locale.setLocale' );
 
 Route::get( 'home', 'HomeController@index' )->name( 'home' );
