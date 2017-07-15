@@ -12,4 +12,11 @@ let mix = require('laravel-mix');
  */
 
 mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+   .js('resources/assets/js/bursenorga.js', 'public/js')
+   .sass('resources/assets/sass/app.scss', 'public/css')
+   .sass('resources/assets/sass/bursenorga.scss', 'public/css')
+   .copy('node_modules/font-awesome/fonts', 'public/fonts')
+   .copy('node_modules/flag-icon-css/flags', 'public/flags')
+   .styles([
+    'node_modules/flag-icon-css/css/flag-icon.min.css'
+  ], 'public/css/thirdparty.css');
