@@ -1,4 +1,4 @@
-// JavaScript of bursenorga
+// JavaScript of convivere
 
 $(document).ready(function () {
   //Off-Canvas

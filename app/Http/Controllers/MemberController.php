@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cookie;
 
 class MemberController extends Controller {
-  
-  private $show = 'allmembers';
-  
+
+  protected $show;
+
   public function __construct() {
     $this->show = Cookie::get( 'showmembers', 'allmembers' );
   }
@@ -21,7 +21,7 @@ class MemberController extends Controller {
    * @return \Illuminate\Http\Response
    */
   public function index() {
-    
+
     switch ( $this->show ) {
       case 'nontrashedmembers': $members = Member::query();
         break;
@@ -30,7 +30,7 @@ class MemberController extends Controller {
       case 'allmembers':
       default: $members = Member::withTrashed()->get();
     }
-    
+
     return view( 'member.list' )->with( [ 'members' => $members ] );
   }
 
@@ -51,13 +51,14 @@ class MemberController extends Controller {
    */
   public function store( Request $request ) {
     $member = new Member;
-    // Name can not be null
 
-    Log::info( 'request:' . $request );
-
-    $member->name = $request->memberName;
-    $member->saveOrFail();
-    return $this->update( $request, $member->id )->with( 'success', __( 'bursenorga.members.created' ) );
+    if ( $this->save( $request, $member ) ) {
+      return $this->update( $request, $member->id )->with( 'success', __( 'convivere.members.created' ) );
+    }
+    else {
+      return $this->update( $request, $member->id )->with( 'danger', __( 'convivere.members.createFailed' ) );
+    }
+    
   }
 
   /**
@@ -93,6 +94,22 @@ class MemberController extends Controller {
   public function update( Request $request, $id ) {
     $member = Member::withTrashed()->find( $id );
 
+    if ( $this->save( $request, $member ) ) {
+      return redirect()->route( 'members.edit', [ 'id' => $id ] )->withInput()->with( 'success', __( 'convivere.members.updated' ) );
+    }
+    else {
+      return redirect()->route( 'members.edit', [ 'id' => $id ] )->withInput()->with( 'danger', __( 'convivere.members.updateFailed' ) );
+    }
+  }
+
+  /**
+   * Store member to model
+   * 
+   * @param Request $request
+   * @param Member $member
+   */
+  protected function save( Request $request, Member $member ) {
+
     $member->name       = $request->memberName;
     $member->prename    = $request->memberPrename;
     $member->birthday   = $request->memberBirthday;
@@ -103,8 +120,6 @@ class MemberController extends Controller {
     $member->university = $request->memberUniversity;
 
     $member->save();
-
-    return redirect()->route( 'members.edit', [ 'id' => $id ] )->withInput()->with( 'success', __( 'bursenorga.members.updated' ) );
   }
 
   /**
@@ -146,7 +161,7 @@ class MemberController extends Controller {
     if ( !in_array( $show, [ 'allmembers', 'trashedmembers', 'nontrashedmembers' ] ) ) {
       $show = 'allmembers';
     }
-    $cookie = Cookie::forever( 'showmembers', $show );
+    $cookie     = Cookie::forever( 'showmembers', $show );
     $this->show = $show;
     return $this->index();
   }

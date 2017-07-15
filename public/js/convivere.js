@@ -76,7 +76,7 @@ module.exports = __webpack_require__(38);
 /***/ 38:
 /***/ (function(module, exports) {
 
-// JavaScript of bursenorga
+// JavaScript of convivere
 
 $(document).ready(function () {
   //Off-Canvas

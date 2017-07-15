@@ -12,9 +12,9 @@ let mix = require('laravel-mix');
  */
 
 mix.js('resources/assets/js/app.js', 'public/js')
-   .js('resources/assets/js/bursenorga.js', 'public/js')
+   .js('resources/assets/js/convivere.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css')
-   .sass('resources/assets/sass/bursenorga.scss', 'public/css')
+   .sass('resources/assets/sass/convivere.scss', 'public/css')
    .copy('node_modules/font-awesome/fonts', 'public/fonts')
    .copy('node_modules/flag-icon-css/flags', 'public/flags')
    .styles([
