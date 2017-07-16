@@ -27,9 +27,9 @@
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-          <li><a href="/members/show/allmembers">@lang('convivere.memberlist.show.all')</a></li>
-          <li><a href="/members/show/nontrashedmembers">@lang('convivere.memberlist.show.nontrashed')</a></li>
-          <li><a href="/members/show/trashedmembers">@lang('convivere.memberlist.show.trashed')</a></li>
+          <li><a href="/members/selector/allSelector">@lang('convivere.memberlist.show.all')</a></li>
+          <li><a href="/members/selector/nontrashedSelector">@lang('convivere.memberlist.show.nontrashed')</a></li>
+          <li><a href="/members/selector/trashedSelector">@lang('convivere.memberlist.show.trashed')</a></li>
         </ul>
       </div>
     </div>

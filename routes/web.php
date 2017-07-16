@@ -24,7 +24,7 @@ Route::get('locale/{locale?}', 'LocaleController@setLocale')->name( 'locale.setL
 Route::get( 'home', 'HomeController@index' )->name( 'home' );
 
 Route::get( 'members/indexajax', 'MemberController@indexAjax' )->name( 'members.indexAjax' );
-Route::get( 'members/show/{show?}', 'MemberController@setShow' )->name( 'members.setShow' );
+Route::get( 'members/selector/{selector?}', 'MemberController@setSelector' )->name( 'members.setSelector' );
 Route::post( 'members/{member}/restore', 'MemberController@restore' )->name('members.restore');
 Route::resource('members', 'MemberController');
 
