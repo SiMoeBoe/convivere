@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Member;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cookie;
 
 class MemberController extends Controller {
@@ -52,13 +51,12 @@ class MemberController extends Controller {
   public function store( Request $request ) {
     $member = new Member;
 
-    if ( $this->save( $request, $member ) ) {
-      return $this->update( $request, $member->id )->with( 'success', __( 'convivere.members.created' ) );
-    }
-    else {
+    if ( $this->save( $request, $member ) === false ) {
       return $this->update( $request, $member->id )->with( 'danger', __( 'convivere.members.createFailed' ) );
     }
-    
+    else {
+      return $this->update( $request, $member->id )->with( 'success', __( 'convivere.members.created' ) );
+    }
   }
 
   /**
@@ -94,11 +92,11 @@ class MemberController extends Controller {
   public function update( Request $request, $id ) {
     $member = Member::withTrashed()->find( $id );
 
-    if ( $this->save( $request, $member ) ) {
-      return redirect()->route( 'members.edit', [ 'id' => $id ] )->withInput()->with( 'success', __( 'convivere.members.updated' ) );
+    if ( $this->save( $request, $member ) === false ) {
+      return redirect()->route( 'members.edit', [ 'id' => $id ] )->withInput()->with( 'danger', __( 'convivere.members.updateFailed' ) );
     }
     else {
-      return redirect()->route( 'members.edit', [ 'id' => $id ] )->withInput()->with( 'danger', __( 'convivere.members.updateFailed' ) );
+      return redirect()->route( 'members.edit', [ 'id' => $id ] )->withInput()->with( 'success', __( 'convivere.members.updated' ) );
     }
   }
 
@@ -112,7 +110,9 @@ class MemberController extends Controller {
 
     $member->name       = $request->memberName;
     $member->prename    = $request->memberPrename;
-    $member->birthday   = $request->memberBirthday;
+    $birthday           = new \DateTime( $request->memberBirthday );
+    $birthday->format( 'Y-m-d' );
+    $member->birthday   = $birthday;
     $member->gender     = $request->memberGender;
     $member->email      = $request->memberEmail;
     $member->address    = $request->memberAddress;
@@ -161,7 +161,7 @@ class MemberController extends Controller {
     if ( !in_array( $show, [ 'allmembers', 'trashedmembers', 'nontrashedmembers' ] ) ) {
       $show = 'allmembers';
     }
-    $cookie     = Cookie::forever( 'showmembers', $show );
+    Cookie::forever( 'showmembers', $show );
     $this->show = $show;
     return $this->index();
   }
